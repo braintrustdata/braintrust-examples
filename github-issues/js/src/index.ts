@@ -3,12 +3,31 @@ import * as zlib from "zlib";
 import * as util from "util";
 import axios from "axios";
 
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import {
+  ChatCompletionRequestMessage,
+  Configuration,
+  CreateChatCompletionRequest,
+  OpenAIApi,
+} from "openai";
 import * as sqlite3 from "sqlite3";
 import * as braintrust from "braintrust";
+import throttledQueue from "throttled-queue";
 
 const CACHE_PATH = "./cache";
 fs.mkdirSync(CACHE_PATH, { recursive: true });
+
+function checkEnvVar(name: string) {
+  if (!process.env[name]) {
+    console.log(
+      `Please set the ${name} environment variable to run this script.`
+    );
+    process.exit(1);
+  }
+}
+
+checkEnvVar("OPENAI_API_KEY");
+checkEnvVar("BRAINTRUST_API_KEY");
+checkEnvVar("BRAINTRUST_API_URL");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -229,10 +248,16 @@ function printSection(sectionText: string) {
   console.log("");
 }
 
+const throttledInstance = throttledQueue(50, 1000, true);
+const chatComplete = async (args: CreateChatCompletionRequest) => {
+  return await throttledInstance(async () => {
+    return await openai.createChatCompletion(args);
+  });
+};
 /* Feel free to comment out this code if you do not want to cache openai requests */
 const db = new sqlite3.Database(`${CACHE_PATH}/cache.db`);
 db.run(`CREATE TABLE IF NOT EXISTS "cache" (params text, response text)`);
-async function cachedChatCompletion(args: any) {
+async function cachedChatCompletion(args: CreateChatCompletionRequest) {
   const param_key = JSON.stringify(args);
   const query = `SELECT response FROM "cache" WHERE params=?`;
   const resp = await new Promise((resolve, reject) => {
@@ -248,7 +273,7 @@ async function cachedChatCompletion(args: any) {
     return JSON.parse((resp as any).response);
   }
 
-  const completion = await openai.createChatCompletion(args);
+  const completion = await chatComplete(args);
   const data = completion.data;
   db.run(`INSERT INTO "cache" VALUES (?, ?)`, [
     param_key,
