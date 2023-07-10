@@ -4,7 +4,7 @@
 
 - Node.js >= 16.6.0
 - OpenAI API key
-- Braintrust api key
+- BrainTrust api key
 
 ## Install dependencies
 
@@ -21,5 +21,5 @@ npm run build
 ## Run
 
 ```bash
-OPENAI_API_KEY=<your key> BRAINTRUST_API_KEY=<braintrust key> BRAINTRUST_API_URL=<your braintrust instanse url> node dist/index.js
+OPENAI_API_KEY=<your key> BRAINTRUST_API_KEY=<braintrust key> node dist/index.js
 ```

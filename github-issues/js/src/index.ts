@@ -27,7 +27,6 @@ function checkEnvVar(name: string) {
 
 checkEnvVar("OPENAI_API_KEY");
 checkEnvVar("BRAINTRUST_API_KEY");
-checkEnvVar("BRAINTRUST_API_URL");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
