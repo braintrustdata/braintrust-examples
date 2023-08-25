@@ -116,7 +116,11 @@ function getCategoryFromResponse(response: CreateChatCompletionResponse): string
   return content.toLowerCase();
 }
 
-async function analyzeExperiment(name: string, dataset: Dataset, responses: CreateChatCompletionResponse[]) {
+async function analyzeExperiment(
+  name: string,
+  prompt: string,
+  dataset: Dataset,
+  responses: CreateChatCompletionResponse[]) {
   let experiment = await braintrust.init("classify-article-titles", {
     experiment: name,
   });
@@ -132,7 +136,9 @@ async function analyzeExperiment(name: string, dataset: Dataset, responses: Crea
       inputs: { title: title.text },
       output: responseCategory,
       expected: expectedCategory,
-      metadata: {},
+      metadata: {
+        "prompt": prompt,
+      },
       scores: {
         "match": responseCategory == expectedCategory ? 1 : 0,
         "valid": dataset.categories.indexOf(responseCategory) != -1 ? 1 : 0,
@@ -188,7 +194,7 @@ async function main() {
 
   printSection(`Running across the dataset`);
   const responses = await runOnAllTitles(openai, prompt, titles);
-  analyzeExperiment("original-prompt", dataset, responses);
+  analyzeExperiment("original-prompt", prompt, dataset, responses);
 
   // Find a title that was not categorized correctly.
   const invalidIndex = responses.findIndex((response: CreateChatCompletionResponse) => {
@@ -222,7 +228,7 @@ async function main() {
   // a look at the experiment.
 
   const fixedResponses = await runOnAllTitles(openai, fixedPrompt, titles);
-  analyzeExperiment("fixed-categories", dataset, fixedResponses);
+  analyzeExperiment("fixed-categories", fixedPrompt, dataset, fixedResponses);
 }
 
 main();
