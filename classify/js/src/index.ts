@@ -13,6 +13,7 @@ import {
 // script will load the data from it.
 const DATA_FILE_PATH: string = "";
 const OPENAI_MODEL: string = "gpt-3.5-turbo";
+const NUM_TITLES: number = 100;
 
 type Title = {
   text: string,
@@ -31,7 +32,7 @@ function buildHuggingFaceUrl() {
   url.searchParams.set("config", "default");
   url.searchParams.set("split", "test");
   url.searchParams.set("offset", "0");
-  url.searchParams.set("limit", "100");
+  url.searchParams.set("limit", NUM_TITLES.toString());
   return url.toString();
 }
 
