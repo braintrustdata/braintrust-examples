@@ -1,0 +1,11 @@
+*.pyc
+*.swp
+*.swo
+data
+services/data
+venv
+.env
+.direnv
+.DS_STORE
+.idea
+node_modules

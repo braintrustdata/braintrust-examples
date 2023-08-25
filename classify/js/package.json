@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "watch": "tsc src/index.ts --outDir dist --watch",
+    "build": "tsc src/index.ts --outDir dist",
+    "script": "node dist/index.js"
+  },
+  "dependencies": {
+    "braintrust": "^0.0.17",
+    "openai": "^3.3.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=16.6.0"
+  }
+}
