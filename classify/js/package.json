@@ -5,7 +5,7 @@
     "script": "node dist/index.js"
   },
   "dependencies": {
-    "braintrust": "^0.0.17",
+    "braintrust": "^0.0.37",
     "openai": "^3.3.0"
   },
   "devDependencies": {
