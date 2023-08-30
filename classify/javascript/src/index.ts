@@ -5,7 +5,7 @@ import { Dataset, Title, analyzeExperiment, classifyTitle, getCategoryFromRespon
 import * as braintrust from "braintrust";
 
 
-async function main() {
+(async ()=>{
   /*
   This tutorial help you get started with building reliable AI apps with BrainTrust.
   We'll build annd iterate on an app that classifies news articles based on their titles into categories.
@@ -75,8 +75,9 @@ async function main() {
       });
     }
     // Log experiment summary to console (including links to the experiment in BrainTrust)
-    console.log(experiment.summarize());
+    console.log(await experiment.summarize());
   }
+
   await analyzeExperiment("original-prompt", prompt, dataset, responses);
   console.log(`Finished running experiment across the dataset`);
 
@@ -126,6 +127,4 @@ async function main() {
   printSection(`Re-running wrongly categorized title with new prompt:`);
   const fixedResponses = await runOnAllTitles(openai, fixedPrompt, titles);
   await analyzeExperiment("fixed-categories", fixedPrompt, dataset, fixedResponses);
-}
-
-await main();
+})();

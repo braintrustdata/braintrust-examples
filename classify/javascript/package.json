@@ -1,8 +1,7 @@
 {
   "scripts": {
     "watch": "tsc src/index.ts --outDir dist --watch",
-    "build": "tsc src/index.ts --outDir dist",
-    "script": "node dist/index.js"
+    "start": "tsc src/index.ts --outDir dist && node dist/index.js"
   },
   "dependencies": {
     "braintrust": "^0.0.37",

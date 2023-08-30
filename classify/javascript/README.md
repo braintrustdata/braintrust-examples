@@ -18,8 +18,15 @@ npm install
 npm run build
 ```
 
+##
+Add your OpenAI and BrainTrust API keys to the .env file. Then, load the env file.
+
+```
+source .env
+```
+
 ## Run
 
 ```bash
-OPENAI_API_KEY=<your key> BRAINTRUST_API_KEY=<braintrust key> node dist/index.js
+npm run script
 ```
