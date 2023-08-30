@@ -1,7 +1,7 @@
 # News title classification and evaluation with BrainTrust
 
-This is a quick tutorial on how to build and evaluate an AI app to classify news titles into categories.
-- `src/index.ts` includes a step by step walk through tutorial
+This is a quick tutorial on how to build and evaluate an AI app to classify news titles.
+- `src/index.ts` includes a step by step walk-through tutorial
 - `src/index.eval.ts` is an example of how to use BrainTrust's eval framework to run experiments.
 
 The eval framework is optional to use but it makes your evaluation script shorter and easier to read. Learn more @ https://www.braintrustdata.com/docs/guides/evals
@@ -32,7 +32,7 @@ Run through the tutorial
 npm run start
 ```
 
-Run experiment using the BrainTrust Eval framework.
+Run an experiment using the BrainTrust Eval framework.
 ```
 npx braintrust eval src/index.eval.ts
 ```

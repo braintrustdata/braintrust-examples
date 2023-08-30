@@ -33,7 +33,7 @@ import * as braintrust from "braintrust";
   console.log(`Picked category: ${getCategoryFromResponse(response)}`);
 
   /* 
-  Now, let's see evaluate our AI app performs across more examples in the dataset.
+  Now, let's evaluate our AI app across more examples in the dataset.
   BrainTrust makes it easy to log our evaluation results and dig into the results to fix issues.
   We'll start by defining some helper functions to make running experiments easier.
   */
@@ -84,7 +84,7 @@ import * as braintrust from "braintrust";
   /*
   The function above will print a link to the BrainTrust experiment.
   Click on it to investigate which test cases fail and how we can improve our AI app.
-  Looking at our results table, we we incorrectly output `sci-tech` instead of `sci/tech`.
+  Looking at our results table, we incorrectly output `sci-tech` instead of `sci/tech`.
   This results in a failed eval test case. Let's fix it.
 
   First, let's see if we can reproduce this issue locally.
