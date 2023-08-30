@@ -95,7 +95,7 @@ var braintrust = require("braintrust");
                 console.log("Title: ".concat(title.text));
                 console.log("Expected category: ".concat(dataset.categories[title.label]));
                 prompt = "\n    You are an editor in a newspaper who helps writers identify the right category for\n    their news articles, by reading the article's title. The category should be one of\n    the following: World, Sports, Business, or Sci-Tech. Reply with one word corresponding\n    to the category";
-                return [4 /*yield*/, (0, utils_1.classifyTitle)(openai, prompt, title)];
+                return [4 /*yield*/, (0, utils_1.classifyTitle)(openai, prompt, title.text)];
             case 2:
                 response = _a.sent();
                 console.log("Picked category: ".concat((0, utils_1.getCategoryFromResponse)(response)));
@@ -122,7 +122,7 @@ var braintrust = require("braintrust");
                 console.log("Actual category: ", (0, utils_1.getCategoryFromResponse)(responses[invalidIndex]));
                 fixedPrompt = "\n      You are an editor in a newspaper who helps writers identify the right category for\n      their news articles, by reading the article's title. The category should be one of\n      the following: World, Sports, Business, or Sci/Tech. Reply with one word corresponding\n      to the category";
                 (0, utils_1.printSection)("Re-running wrongly categorized title with new prompt:");
-                return [4 /*yield*/, (0, utils_1.classifyTitle)(openai, fixedPrompt, titles[invalidIndex])];
+                return [4 /*yield*/, (0, utils_1.classifyTitle)(openai, fixedPrompt, titles[invalidIndex].text)];
             case 5:
                 fixedResponse = _a.sent();
                 console.log("Title: ", titles[invalidIndex].text);

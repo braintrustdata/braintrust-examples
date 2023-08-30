@@ -43,7 +43,7 @@ var NUM_TITLES = 100;
 var DATA_FILE_PATH = "";
 var fs = require("fs");
 // Define some helper functions for classifying titles.
-function classifyTitle(openai, prompt, title) {
+function classifyTitle(openai, prompt, titelText) {
     return __awaiter(this, void 0, void 0, function () {
         var messages, response;
         return __generator(this, function (_a) {
@@ -56,7 +56,7 @@ function classifyTitle(openai, prompt, title) {
                         },
                         {
                             role: "user",
-                            content: "Article title: ".concat(title.text),
+                            content: "Article title: ".concat(titelText),
                         },
                     ];
                     return [4 /*yield*/, openai.createChatCompletion({
@@ -125,7 +125,7 @@ function runOnAllTitles(openai, prompt, titles) {
             switch (_a.label) {
                 case 0:
                     startTime = performance.now();
-                    promises = titles.map(function (title) { return classifyTitle(openai, prompt, title); });
+                    promises = titles.map(function (title) { return classifyTitle(openai, prompt, title.text); });
                     return [4 /*yield*/, Promise.all(promises)];
                 case 1:
                     ret = _a.sent();

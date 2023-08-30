@@ -1,7 +1,7 @@
 import {
-  CreateChatCompletionResponse, OpenAIApi
+  CreateChatCompletionResponse
 } from "openai";
-import { Dataset, Title, analyzeExperiment, classifyTitle, getCategoryFromResponse, initializeOpenAI, loadDataset, printSection, runOnAllTitles } from "./utils";
+import { Dataset, classifyTitle, getCategoryFromResponse, initializeOpenAI, loadDataset, printSection, runOnAllTitles } from "./utils";
 import * as braintrust from "braintrust";
 
 
@@ -29,7 +29,7 @@ import * as braintrust from "braintrust";
     the following: World, Sports, Business, or Sci-Tech. Reply with one word corresponding
     to the category`;
 
-  const response = await classifyTitle(openai, prompt, title);
+  const response = await classifyTitle(openai, prompt, title.text);
   console.log(`Picked category: ${getCategoryFromResponse(response)}`);
 
   /* 
@@ -114,7 +114,7 @@ import * as braintrust from "braintrust";
       to the category`;
 
   printSection(`Re-running wrongly categorized title with new prompt:`);
-  const fixedResponse = await classifyTitle(openai, fixedPrompt, titles[invalidIndex]);
+  const fixedResponse = await classifyTitle(openai, fixedPrompt, titles[invalidIndex].text);
   console.log("Title: ", titles[invalidIndex].text);
   console.log("Expected category: ", dataset.categories[titles[invalidIndex].label]);
   console.log("Actual category: ", getCategoryFromResponse(fixedResponse));

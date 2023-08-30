@@ -12,7 +12,7 @@ export type Title = {
 }
 
 // Define some helper functions for classifying titles.
-export async function classifyTitle(openai: OpenAIApi, prompt: string, title: Title) {
+export async function classifyTitle(openai: OpenAIApi, prompt: string, titelText: string) {
     const messages: ChatCompletionRequestMessage[] = [
         {
             role: "system",
@@ -20,7 +20,7 @@ export async function classifyTitle(openai: OpenAIApi, prompt: string, title: Ti
         },
         {
             role: "user",
-            content: `Article title: ${title.text}`,
+            content: `Article title: ${titelText}`,
         },
     ];
 
@@ -81,7 +81,7 @@ export async function runOnAllTitles(
     prompt: string,
     titles: Title[]): Promise<CreateChatCompletionResponse[]> {
     const startTime = performance.now();
-    const promises = titles.map(title => classifyTitle(openai, prompt, title));
+    const promises = titles.map(title => classifyTitle(openai, prompt, title.text));
     const ret = await Promise.all(promises);
     const endTime = performance.now();
     console.log(`Processed ${titles.length} titles in ${(endTime - startTime) / 1000} seconds`);
