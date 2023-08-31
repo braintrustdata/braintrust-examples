@@ -9,3 +9,4 @@ venv
 .DS_STORE
 .idea
 node_modules
+dist/

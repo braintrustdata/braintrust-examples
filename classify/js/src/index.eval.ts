@@ -5,10 +5,10 @@ import { classifyTitle, initializeOpenAI, loadDataset } from "./utils";
 
 const openai = initializeOpenAI();
 const prompt = `
-    You are an editor in a newspaper who helps writers identify the right category for
-    their news articles, by reading the article's title. The category should be one of
-    the following: World, Sports, Business, or Sci-Tech. Reply with one word corresponding
-    to the category`;
+You are an editor in a newspaper who helps writers identify the right category for
+their news articles, by reading the article's title. The category should be one of
+the following: World, Sports, Business, or Sci-Tech. Reply with one word corresponding
+to the category`;
 
 const fixedPrompt = `
 You are an editor in a newspaper who helps writers identify the right category for

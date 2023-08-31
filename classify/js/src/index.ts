@@ -1,13 +1,12 @@
+/* This file walks through the full classification example as a script. You can use this as inspiration if you are
+ * running evals and plan to log outputs to BrainTrust. If you are looking for an easy way to write an eval for
+ * classification, look at `index.eval.ts` instead.
+ */
 import {
   CreateChatCompletionResponse
 } from "openai";
 import { Dataset, classifyTitle, getCategoryFromResponse, initializeOpenAI, loadDataset, printSection, runOnAllTitles } from "./utils";
 import * as braintrust from "braintrust";
-
-/* This file walks through the full classification example as a script. You can use this as inspiration if you are
- * running evals and plan to log outputs to BrainTrust. If you are looking for an easy way to write an eval for
- * classification, look at `index.eval.ts` instead
- */
 
 (async ()=>{
   /*
