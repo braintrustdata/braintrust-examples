@@ -24,10 +24,15 @@ export async function classifyTitle(openai: OpenAIApi, prompt: string, titelText
         },
     ];
 
-    const response = await openai.createChatCompletion({
+    const response = await openai.createChatCompletion(
+    {
         model: "gpt-3.5-turbo",
         messages: messages,
-    });
+    },
+    {
+        timeout: 10000,
+    }
+    );
 
     return response.data;
 }
