@@ -34,5 +34,5 @@ npm run start
 
 Run an experiment using the BrainTrust Eval framework.
 ```
-npx braintrust eval src/index.eval.ts
+npm run eval
 ```

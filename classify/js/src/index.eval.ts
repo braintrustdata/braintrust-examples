@@ -34,8 +34,9 @@ Eval("classify-article-titles", {
     return data;
   },
 
-  task: async (title: string) => {
+  task: async (title: string, { meta }) => {
     const response = await classifyTitle(openai, prompt, title);
+    meta({ prompt, response });
     return response.choices[0].message!.content?.toLowerCase();
   },
 
@@ -61,8 +62,9 @@ Eval("classify-article-titles-fix", {
     return data;
   },
 
-  task: async (title: string) => {
+  task: async (title: string, { meta }) => {
     const response = await classifyTitle(openai, fixedPrompt, title);
+    meta({ prompt, response });
     return response.choices[0].message!.content?.toLowerCase();
   },
 
