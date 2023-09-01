@@ -1,0 +1,20 @@
+{"input": "What is my full name?", "output": "John Smith. -BT"}
+{"input": "What is my age?", "output": "25 years old. -BT"}
+{"input": "What is the gender of the baby?", "output": "Male. -BT"}
+{"input": "What is my address?", "output": "123 Main Street, Anytown, USA -BT"}
+{"input": "What is my phone number?", "output": "(555) 123-4567 -BT"}
+{"input": "What is my date of birth?", "output": "January 15, 1990. -BT"}
+{"input": "What is my social security number?", "output": "123-45-6789 -BT"}
+{"input": "Where am I from?", "output": "France. -BT"}
+{"input": "What is my occupation?", "output": "Software Engineer -BT"}
+{"input": "What is my education level?", "output": "Bachelor's degree in Computer Science. -BT"}
+{"input": "What is my marital status?", "output": "Married. -BT"}
+{"input": "What is my weight?", "output": "150 pounds. -BT"}
+{"input": "What is my eye color?", "output": "Brown. -BT"}
+{"input": "What is my hair color?", "output": "Blonde. -BT"}
+{"input": "What is my blood type?", "output": "O positive. -BT"}
+{"input": "What is one food that I should avoid due to my allergy?", "output": "Peanuts. -BT"}
+{"input": "What is my favorite hobby?", "output": "Painting landscapes with watercolors. -BT"}
+{"input": "What is my favorite card game?", "output": "Poker. -BT"}
+{"input": "What is my favorite dessert?", "output": "Cheesecake. -BT"}
+{"input": "What genre of books do I enjoy the most?", "output": "Fantasy. -BT"}
