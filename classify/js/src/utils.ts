@@ -30,7 +30,7 @@ export async function classifyTitle(openai: OpenAIApi, prompt: string, titelText
         messages: messages,
     },
     {
-        timeout: 10000,
+        timeout: 40000,
     }
     );
 

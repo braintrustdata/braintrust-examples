@@ -1,0 +1,28 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "description": "This is a quick tutorial on how to build and evaluate an AI app to classify news titles. - `src/index.ts` includes a step by step walk-through tutorial - `src/index.eval.ts` is an example of how to use BrainTrust's eval framework to run experiments.",
+  "main": "index.js",
+  "dependencies": {
+    "autoevals": "^0.0.21",
+    "braintrust": "^0.0.45",
+    "chromadb": "^1.5.8",
+    "openai": "^4.7.1"
+  },
+  "overrides": {
+    "chromadb": {
+      "openai": "^4.7.1"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eval": "npx braintrust eval src/index.eval.ts",
+    "cli": "npx ts-node src/cli.ts"
+
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.6.1"
+  }
+}
