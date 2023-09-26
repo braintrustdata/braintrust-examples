@@ -11,7 +11,7 @@ import {
 } from "openai";
 import * as sqlite3 from "sqlite3";
 import * as braintrust from "braintrust";
-import throttledQueue from "throttled-queue";
+const throttledQueue = require("throttled-queue");
 
 const CACHE_PATH = "./cache";
 fs.mkdirSync(CACHE_PATH, { recursive: true });
