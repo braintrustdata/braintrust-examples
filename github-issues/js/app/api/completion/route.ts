@@ -9,7 +9,7 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export const titleGeneratorMessages = (
-  title: string
+  content: string
 ): ChatCompletionMessage[] => [
   {
     role: "system",
@@ -17,9 +17,11 @@ export const titleGeneratorMessages = (
   },
   {
     role: "user",
-    content: "Github issue: " + title,
+    content: "Github issue: " + content,
   },
 ];
+
+export const generateTitle = async (title: string, stream: boolean) => {};
 
 export async function POST(req: Request) {
   const { prompt } = await req.json();
@@ -29,6 +31,7 @@ export async function POST(req: Request) {
     messages: titleGeneratorMessages(prompt),
     temperature: 0,
   });
+
   const stream = OpenAIStream(response);
   return new StreamingTextResponse(stream);
 }

@@ -1,5 +1,4 @@
 import GithubBox from "@/components/github-box";
-import Image from "next/image";
 
 export default function Home() {
   return (
