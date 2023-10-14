@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   const url = searchParams.get("url");
 
   // parse url of the form https://github.com/supabase/supabase/issues/15534
-  const [owner, repo, _, issue_number] = url!.split("/").slice(-4);
+  const [owner, repo, _, issue_number] = url!.trim().split("/").slice(-4);
   console.log({ owner, repo, issue_number });
 
   const data = await octokit.request(

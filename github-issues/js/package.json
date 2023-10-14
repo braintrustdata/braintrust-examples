@@ -11,11 +11,13 @@
   "dependencies": {
     "@octokit/types": "^12.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "ai": "^2.2.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.287.0",
     "next": "13.5.4",
     "octokit": "^3.1.1",
+    "openai": "^4.12.1",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^1.14.0",

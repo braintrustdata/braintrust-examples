@@ -3,11 +3,13 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IssueResponse } from "@/app/api/ghissue/route";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useCompletion } from "ai/react";
 
 export default function Component() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [issue, setIssue] = useState<IssueResponse | null>(null);
+  const [refresh, setRefresh] = useState(0);
 
   const fetchIssue = async () => {
     if (!inputRef.current?.value) {
@@ -18,7 +20,7 @@ export default function Component() {
       `/api/ghissue?url=${encodeURIComponent(inputRef.current?.value)}`
     );
     const { data } = await resp.json();
-    console.log(data);
+    setRefresh(refresh + 1);
     setIssue(data);
   };
 
@@ -43,7 +45,7 @@ export default function Component() {
       </form>
       <div className="rounded-lg border border-zinc-200 border-dashed dark:border-zinc-800 overflow-auto">
         {issue ? (
-          <TitleCompletion issue={issue} />
+          <TitleCompletion issue={issue} refresh={refresh} />
         ) : (
           <p className="p-4 text-zinc-600 dark:text-zinc-200">
             Stuff will appear here...
@@ -54,7 +56,19 @@ export default function Component() {
   );
 }
 
-export function TitleCompletion({ issue }: { issue: IssueResponse }) {
+export function TitleCompletion({
+  issue,
+  refresh,
+}: {
+  issue: IssueResponse;
+  refresh: number;
+}) {
+  const { complete, completion } = useCompletion({ api: "/api/completion" });
+
+  useEffect(() => {
+    complete(issue.data.body || "");
+  }, [complete, issue.data.body, refresh]);
+
   return (
     <div className="p-4">
       <p className="text-zinc-600 dark:text-zinc-200 font-mono text-sm font-bold">
@@ -62,7 +76,7 @@ export function TitleCompletion({ issue }: { issue: IssueResponse }) {
       </p>
 
       <p className="text-zinc-600 dark:text-zinc-200 font-mono text-sm font-bold">
-        Revised:&nbsp; <span className="bg-green-200">{issue.data.title}</span>
+        Revised:&nbsp; <span className="bg-green-200">{completion}</span>
       </p>
 
       <pre className="whitespace-pre-wrap mt-4 text-xs">{issue.data.body}</pre>
