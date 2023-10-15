@@ -1,11 +1,9 @@
-import { Span, currentSpan } from "braintrust";
+import { Span } from "braintrust";
 import OpenAI from "openai";
 import {
   ChatCompletion,
-  ChatCompletionChunk,
   ChatCompletionCreateParams,
 } from "openai/resources/index.mjs";
-import { Stream } from "openai/streaming.mjs";
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
