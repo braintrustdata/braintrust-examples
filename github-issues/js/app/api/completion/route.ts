@@ -1,25 +1,12 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
+import { titleGeneratorMessages } from "@/util/prompts";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 export const runtime = "edge";
-
-export const titleGeneratorMessages = (
-  content: string
-): ChatCompletionMessage[] => [
-  {
-    role: "system",
-    content: "Generate a new title based on the github issue",
-  },
-  {
-    role: "user",
-    content: "Github issue: " + content,
-  },
-];
 
 export const generateTitle = async (title: string, stream: boolean) => {};
 

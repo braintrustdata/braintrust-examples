@@ -1,9 +1,9 @@
-import { Eval, currentSpan } from "braintrust";
+import { Eval } from "braintrust";
 import { Summary } from "autoevals";
 
-import { titleGeneratorMessages } from "@/app/api/completion/route";
 import { loadIssues } from "./load";
 import { chatCompletion } from "./oai";
+import { titleGeneratorMessages } from "@/util/prompts";
 
 const MODEL = "gpt-3.5-turbo";
 
