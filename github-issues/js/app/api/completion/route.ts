@@ -8,8 +8,6 @@ const openai = new OpenAI({
 
 export const runtime = "edge";
 
-export const generateTitle = async (title: string, stream: boolean) => {};
-
 export async function POST(req: Request) {
   const { prompt } = await req.json();
   const response = await openai.chat.completions.create({
