@@ -3,7 +3,7 @@ import * as zlib from "zlib";
 import * as util from "util";
 import axios from "axios";
 
-const N_ISSUES = 20;
+const N_ISSUES = 1;
 
 const REPO = "supabase/supabase";
 
