@@ -1,5 +1,5 @@
-import { Eval } from "braintrust";
-import { Summary } from "autoevals";
+import { Eval, currentSpan } from "braintrust";
+import { Summary, LevenshteinScorer } from "autoevals";
 
 import { loadIssues } from "./load";
 import { chatCompletion } from "./oai";
@@ -19,13 +19,13 @@ Eval("gh-issues", {
       };
     });
   },
-  task: async (input, { span }) => {
-    const res = await chatCompletion(span, {
+  task: async (input) => {
+    const res = await chatCompletion(currentSpan(), {
       model: MODEL,
       messages: titleGeneratorMessages(input),
       temperature: 0,
     });
     return res.choices[0].message!.content!;
   },
-  scores: [Summary],
+  scores: [Summary, LevenshteinScorer],
 });
