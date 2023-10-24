@@ -22,7 +22,31 @@ export async function chatCompletion(
     "OpenAI Completion",
     async (span) => {
       const { messages, ...rest } = params;
-      const ret = await openai.chat.completions.create(params);
+      let i = 0;
+      let ret: ChatCompletion | null = null;
+      while (i < 10) {
+        try {
+          ret = (await Promise.race([
+            openai.chat.completions.create(params),
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                reject(new Error("Timeout"));
+              }, 10000);
+            }),
+          ])) as ChatCompletion;
+          break;
+        } catch (e: any) {
+          console.warn("Timeout, retrying...");
+          i++;
+          await new Promise((resolve) =>
+            setTimeout(resolve, Math.random() * 1000)
+          );
+          continue;
+        }
+      }
+      if (!ret) {
+        throw new Error("Timeout (30s x 10)");
+      }
       span.log({
         input: messages,
         metadata: rest,
