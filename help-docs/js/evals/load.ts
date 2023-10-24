@@ -45,7 +45,7 @@ async function ensureCachedFile(
   await download(fullPath);
 }
 
-async function buildMarkdownSections() {
+export async function buildMarkdownSections() {
   await ensureCachedFile("markdown_docs.json", async (path) => {
     const fullUrl = `https://braintrust-public.s3.amazonaws.com/help-desk/markdown_docs.json.gz`;
     const resp = await axios.get(fullUrl, {

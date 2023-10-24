@@ -13,7 +13,7 @@ Eval("coda-help-desk", {
     return pairs.splice(0, NUM_QA_PAIRS);
   },
   task: async (input) => {
-    const res = await chatCompletion(currentSpan(), {
+    const res = await chatCompletion({
       model: MODEL,
       messages: simpleQA(input),
       temperature: 0,
