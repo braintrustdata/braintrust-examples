@@ -1,23 +1,16 @@
 import { Eval, currentSpan } from "braintrust";
-import { Summary, LevenshteinScorer } from "autoevals";
+import { Factuality } from "autoevals";
 
-import { loadIssues } from "./load";
+import { NUM_QA_PAIRS, buildData } from "./load";
 import { chatCompletion } from "./oai";
 import { simpleQA } from "@/util/prompts";
 
 const MODEL = "gpt-3.5-turbo";
 
-Eval("gh-issues", {
+Eval("coda-help-desk", {
   data: async () => {
-    const issues = await loadIssues();
-    return issues.map((issue) => {
-      const { title, ...metadata } = issue.metadata;
-      return {
-        input: issue.page_content,
-        expected: title,
-        metadata,
-      };
-    });
+    const pairs = await buildData();
+    return pairs.splice(0, NUM_QA_PAIRS);
   },
   task: async (input) => {
     const res = await chatCompletion(currentSpan(), {
@@ -27,5 +20,5 @@ Eval("gh-issues", {
     });
     return res.choices[0].message!.content!;
   },
-  scores: [Summary, LevenshteinScorer],
+  scores: [Factuality],
 });
