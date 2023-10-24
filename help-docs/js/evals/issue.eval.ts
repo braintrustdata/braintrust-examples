@@ -3,7 +3,7 @@ import { Summary, LevenshteinScorer } from "autoevals";
 
 import { loadIssues } from "./load";
 import { chatCompletion } from "./oai";
-import { titleGeneratorMessages } from "@/util/prompts";
+import { simpleQA } from "@/util/prompts";
 
 const MODEL = "gpt-3.5-turbo";
 
@@ -22,7 +22,7 @@ Eval("gh-issues", {
   task: async (input) => {
     const res = await chatCompletion(currentSpan(), {
       model: MODEL,
-      messages: titleGeneratorMessages(input),
+      messages: simpleQA(input),
       temperature: 0,
     });
     return res.choices[0].message!.content!;

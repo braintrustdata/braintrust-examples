@@ -1,13 +1,14 @@
 import { ChatCompletionMessage } from "openai/resources/index.mjs";
-export const titleGeneratorMessages = (
-  content: string
-): ChatCompletionMessage[] => [
+export const simpleQA = (content: string): ChatCompletionMessage[] => [
   {
-    role: "system",
-    content: "Generate a new title based on the github issue",
+    role: "assistant",
+    content: `You are a help desk assistant for Coda.`,
   },
   {
     role: "user",
-    content: "Github issue: " + content,
+    content:
+      `Please answer the following question:
+
+Question: ` + content,
   },
 ];

@@ -1,4 +1,4 @@
-import GithubBox from "@/components/github-box";
+import GithubBox from "@/components/main";
 
 export default function Home() {
   return (
