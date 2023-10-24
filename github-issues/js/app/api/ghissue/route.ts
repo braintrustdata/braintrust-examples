@@ -1,6 +1,5 @@
 import { Octokit } from "@octokit/core";
 import { Endpoints } from "@octokit/types";
-
 // Octokit.js
 // https://github.com/octokit/core.js#readme
 const octokit = new Octokit({
