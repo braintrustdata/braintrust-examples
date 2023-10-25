@@ -1,18 +1,20 @@
 {
   "scripts": {
-    "watch": "tsc src/index.ts --outDir dist --watch",
-    "build": "tsc src/index.ts --outDir dist",
-    "script": "tsc src/index.ts --outDir dist && node dist/index.js",
+    "watch": "esbuild --platform=node --bundle src/index.ts --outfile=dist/index.js --watch=forever",
+    "build": "esbuild --platform=node --bundle src/index.ts --outfile=dist/index.js",
+    "script": "npm run build && node dist/index.js",
     "eval": "braintrust eval src"
   },
   "dependencies": {
-    "braintrust": "^0.0.37",
+    "braintrust": "file:/home/ubuntu/braintrust/braintrust/sdk/js",
     "openai": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "prettier": "^2.8.7",
+    "esbuild": "^0.18.19"
   },
   "engines": {
     "node": ">=16.6.0"
