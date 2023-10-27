@@ -9,7 +9,6 @@ import {
   CreateChatCompletionRequest,
   OpenAIApi,
 } from "openai";
-import * as sqlite3 from "sqlite3";
 import * as braintrust from "braintrust";
 const throttledQueue = require("throttled-queue");
 
@@ -61,7 +60,7 @@ by looking at their issue descriptions. The titles should be clear and concise o
   ];
 
   let title = (
-    await cachedChatCompletion({
+    await chatCompletion({
       model: MODEL,
       messages: createTitle(issue.page_content),
     })
@@ -95,7 +94,7 @@ summarizes the issue by writing "Winner: 1" or "Winner: 2", and then a short rat
   ];
 
   let grade = (
-    await cachedChatCompletion({
+    await chatCompletion({
       model: MODEL,
       messages: gradeTitle(issue.page_content, title, issue.metadata.title),
     })
@@ -107,13 +106,13 @@ summarizes the issue by writing "Winner: 1" or "Winner: 2", and then a short rat
 
   let evaluateIssue = async (issue: any) => {
     const title = (
-      await cachedChatCompletion({
+      await chatCompletion({
         model: MODEL,
         messages: createTitle(issue.page_content),
       })
     ).choices[0].message!.content!;
     const grade = (
-      await cachedChatCompletion({
+      await chatCompletion({
         model: MODEL,
         messages: gradeTitle(issue.page_content, title, issue.metadata.title),
       })
@@ -133,11 +132,8 @@ summarizes the issue by writing "Winner: 1" or "Winner: 2", and then a short rat
 
   let titleGrades = await runOnAllIssues();
 
-  let experiment = await braintrust.init("gh-issue-titles", {
-    experiment: "original-prompt",
-  });
-
   let analyzeExperiment = async (
+    experiment: braintrust.Experiment,
     titleGrades: { title: string; grade: string }[]
   ) => {
     for (let i = 0; i < issues.length; i++) {
@@ -161,7 +157,12 @@ summarizes the issue by writing "Winner: 1" or "Winner: 2", and then a short rat
 
     console.log(await experiment.summarize());
   };
-  await analyzeExperiment(titleGrades);
+
+  await braintrust.withExperiment(
+    "gh-issue-titles",
+    async (experiment) => analyzeExperiment(experiment, titleGrades),
+    { experiment: "original-prompt" }
+  );
 
   issue = issues.find((e) => e.metadata.number == 4833);
   printSection(`Let's debug ${issue.metadata.url}`);
@@ -188,10 +189,11 @@ by looking at their issue descriptions. Make sure the title is accurate and comp
 
   printSection("Running across the dataset");
   titleGrades = await runOnAllIssues();
-  experiment = await braintrust.init("gh-issue-titles", {
-    experiment: "more-detailed-titles",
-  });
-  await analyzeExperiment(titleGrades);
+  await braintrust.withExperiment(
+    "gh-issue-titles",
+    async (experiment) => analyzeExperiment(experiment, titleGrades),
+    { experiment: "more-detailed-titles" }
+  );
 }
 
 function parseBestTitle(grade: string) {
@@ -253,31 +255,7 @@ const chatComplete = async (args: CreateChatCompletionRequest) => {
     return await openai.createChatCompletion(args);
   });
 };
-/* Feel free to comment out this code if you do not want to cache openai requests */
-const db = new sqlite3.Database(`${CACHE_PATH}/cache.db`);
-db.run(`CREATE TABLE IF NOT EXISTS "cache" (params text, response text)`);
-async function cachedChatCompletion(args: CreateChatCompletionRequest) {
-  const param_key = JSON.stringify(args);
-  const query = `SELECT response FROM "cache" WHERE params=?`;
-  const resp = await new Promise((resolve, reject) => {
-    db.get(query, [param_key], (err, row) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(row);
-      }
-    });
-  });
-  if (resp) {
-    return JSON.parse((resp as any).response);
-  }
-
+async function chatCompletion(args: CreateChatCompletionRequest) {
   const completion = await chatComplete(args);
-  const data = completion.data;
-  db.run(`INSERT INTO "cache" VALUES (?, ?)`, [
-    param_key,
-    JSON.stringify(data),
-  ]);
-
-  return data;
+  return completion.data;
 }

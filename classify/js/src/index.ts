@@ -2,13 +2,18 @@
  * running evals and plan to log outputs to BrainTrust. If you are looking for an easy way to write an eval for
  * classification, look at `index.eval.ts` instead.
  */
+import { CreateChatCompletionResponse } from "openai";
 import {
-  CreateChatCompletionResponse
-} from "openai";
-import { Dataset, classifyTitle, getCategoryFromResponse, initializeOpenAI, loadDataset, printSection, runOnAllTitles } from "./utils";
-import * as braintrust from "braintrust";
+  analyzeExperiment,
+  classifyTitle,
+  getCategoryFromResponse,
+  initializeOpenAI,
+  loadDataset,
+  printSection,
+  runOnAllTitles,
+} from "./utils";
 
-(async ()=>{
+(async () => {
   /*
   This tutorial help you get started with building reliable AI apps with BrainTrust.
   We'll build annd iterate on an app that classifies news articles based on their titles into categories.
@@ -43,44 +48,6 @@ import * as braintrust from "braintrust";
   printSection(`Running experiment across the dataset`);
   // Generate all classifications
   const responses = await runOnAllTitles(openai, prompt, titles);
-
-  // Grade and log results to BrainTrust
-  async function analyzeExperiment(
-    name: string,
-    prompt: string,
-    dataset: Dataset,
-    responses: CreateChatCompletionResponse[]) {
-
-    // Initialize a BrainTrust experiment
-    let experiment = await braintrust.init("classify-article-titles", {
-      experiment: name,
-    });
-
-    const titles = dataset.titles;
-    for (let i = 0; i < titles.length; i++) {
-      const title = titles[i];
-      const response = responses[i];
-      const responseCategory = getCategoryFromResponse(response);
-      const expectedCategory = dataset.categories[title.label].toLowerCase();
-
-      // Log to BrainTrust
-      experiment.log({
-        inputs: { title: title.text },
-        output: responseCategory,
-        expected: expectedCategory,
-        metadata: {
-          "prompt": prompt,
-        },
-        scores: {
-          "match": responseCategory == expectedCategory ? 1 : 0,
-          "valid": dataset.categories.indexOf(responseCategory) != -1 ? 1 : 0,
-        },
-      });
-    }
-    // Log experiment summary to console (including links to the experiment in BrainTrust)
-    console.log(await experiment.summarize());
-  }
-
   await analyzeExperiment("original-prompt", prompt, dataset, responses);
   console.log(`Finished running experiment across the dataset`);
 
@@ -93,15 +60,23 @@ import * as braintrust from "braintrust";
   First, let's see if we can reproduce this issue locally.
   We can test an article corresponding to the "Sci/Tech" category and reproduce the evaluation:
   */
-  const invalidIndex = responses.findIndex((response: CreateChatCompletionResponse) => {
-    const responseCategory = getCategoryFromResponse(response);
-    return dataset.categories.indexOf(responseCategory) == -1;
-  });
+  const invalidIndex = responses.findIndex(
+    (response: CreateChatCompletionResponse) => {
+      const responseCategory = getCategoryFromResponse(response);
+      return dataset.categories.indexOf(responseCategory) == -1;
+    }
+  );
 
   printSection("The following title was wrongly categorized");
   console.log("Title: ", titles[invalidIndex].text);
-  console.log("Expected category: ", dataset.categories[titles[invalidIndex].label]);
-  console.log("Actual category: ", getCategoryFromResponse(responses[invalidIndex]));
+  console.log(
+    "Expected category: ",
+    dataset.categories[titles[invalidIndex].label]
+  );
+  console.log(
+    "Actual category: ",
+    getCategoryFromResponse(responses[invalidIndex])
+  );
 
   /*
   Have you spotted the issue?
@@ -117,9 +92,16 @@ import * as braintrust from "braintrust";
       to the category`;
 
   printSection(`Re-running wrongly categorized title with new prompt:`);
-  const fixedResponse = await classifyTitle(openai, fixedPrompt, titles[invalidIndex].text);
+  const fixedResponse = await classifyTitle(
+    openai,
+    fixedPrompt,
+    titles[invalidIndex].text
+  );
   console.log("Title: ", titles[invalidIndex].text);
-  console.log("Expected category: ", dataset.categories[titles[invalidIndex].label]);
+  console.log(
+    "Expected category: ",
+    dataset.categories[titles[invalidIndex].label]
+  );
   console.log("Actual category: ", getCategoryFromResponse(fixedResponse));
 
   /*
@@ -129,5 +111,10 @@ import * as braintrust from "braintrust";
   */
   printSection(`Running new experiment across the dataset`);
   const fixedResponses = await runOnAllTitles(openai, fixedPrompt, titles);
-  await analyzeExperiment("fixed-categories", fixedPrompt, dataset, fixedResponses);
+  await analyzeExperiment(
+    "fixed-categories",
+    fixedPrompt,
+    dataset,
+    fixedResponses
+  );
 })();
