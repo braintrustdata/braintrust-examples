@@ -29,7 +29,7 @@ source .env
 
 Run through the tutorial
 ```bash
-npm run start
+npm run script
 ```
 
 Run an experiment using the BrainTrust Eval framework.
